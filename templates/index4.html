@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <title>Document</title>
+
+    <script>
+    function save_comment(){
+    const name = $('#제목').val();
+    const comment = $('#내용').val();
+
+
+    if(name ==""){
+        alert("글 제목을 입력해주세요")
+        $('#제목').focus();
+    } else if(comment ==""){
+        alert("글 내용을 입력해주세요")
+        $('#내용').focus();
+
+    } else{
+    console.log(name,comment)
+
+    // const
+        // 재할당과 재선언이 안됨
+    // let
+        // 재할당 가능 , 재선언 불가능
+
+    $.ajax({
+        type: 'POST',
+        url: '/home',
+        data: {name_give:name, content_give:comment},
+        success: function (response) {
+            if (response['msg']=="이미 존재하는 글제목입니다!") {
+                alert(response['msg'])
+                $('#제목').focus();
+            } else {
+                alert(response['msg']);
+                location.href = '/main'
+            }
+        }
+    })
+}}
+
+</script>
+</head>
+<body>
+    <div class="mypost">
+        <div class="form-floating mb-3">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="name">글제목</span>
+                <input id="제목" type="text" class="form-control" placeholder="제목을 입력하세요" aria-label="Username"
+                       aria-describedby="basic-addon1">
+            </div>
+        </div>
+        <div class="input-group">
+            <span class="input-group-text" id="comment" >내용</span>
+            <textarea id="내용" rows="15" cols="40" class="form-control" aria-label="With textarea"></textarea>
+        </div>
+
+
+<!--        이미지 등록칸 + 연동은 대체 어떻게?-->
+        <div>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" id="imageInput" />
+  </form>
+        </div>
+
+
+
+        <div class="buttons">
+            <button onclick="save_comment()" type="button" class="btn btn-dark">작성완료</button>
+            <!-- 만약 이버튼 사용시 메인게시판으로 돌아가게함 -->
+            <button onclick="window.location.href='/main'" type="button" class="btn btn-outline-dark">작성취소</button>
+        </div>
+    </div>
+    <div class="mycards" id="comment-list">
+    </div>
+    <script defer src="./App.js"></script>
+
+
+</body>
+</html>

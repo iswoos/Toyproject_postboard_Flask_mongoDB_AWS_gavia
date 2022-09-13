@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <style>
+        .main {
+            width: 250px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+        }
+
+        .logo {
+            margin-top: 0px;
+            margin-bottom: 40px;
+        }
+
+        #login {
+            width: 100%;
+            background-color: skyblue;
+            border-color: transparent;
+            color: white;
+        }
+
+        #register {
+            width: 100%;
+            background-color: skyblue;
+            border-color: transparent;
+            color: white;
+        }
+
+        .account {
+            display: block;
+            margin-bottom: 3px;
+            padding: 3px;
+            border: 1px solid lightgray;
+            border-radius: 3px;
+        }
+
+        #alert {
+            border-color: transparent;
+        }
+
+    </style>
+
+    <script>
+        function register() {
+            let ID = $('#id').val()
+            let PW = $('#password').val()
+            let PW2 = $('#password2').val()
+            console.log(ID, PW, PW2)
+
+            // ID/PW 입력 안했을 시 경고하는 기능
+            if (ID == "") {
+                alert("ID를 입력해주세요")
+                $('#id').focus();
+
+            } else if (PW == "") {
+                alert("PW를 입력해주세요")
+                $('#password').focus();
+
+            } else if (PW2 == "") {
+                alert("PW를 입력해주세요")
+                $('#password2').focus();
+
+            } else if (PW != PW2) {
+                alert("PW 입력값이 다릅니다.")
+
+            }else {
+                    $.ajax({
+                        type: 'POST',
+                        url: '/register',
+                        data: {
+                            ID_give: ID,
+                            PW_give: PW
+                        },
+                        success: function (response) {
+                            // 가입을 완료한 후, 가입완료! 메시지를 띄우고
+                            // 자동으로 처음 로그인 화면으로 돌아가게 설정해놓았다.
+                            if(response['msg'] == "이미 존재하는 ID입니다!"){
+                                alert(response['msg'])
+                                $('#id').focus();
+                            } else {
+                                alert(response['msg'])
+                                 location.href='/'
+                            }
+                        }
+                    })
+                }
+            }
+
+    </script>
+
+
+</head>
+<body>
+    <div class="main">
+        <h1 class="logo">메인명 미정</h1>
+        <div class="container">
+            <input type="text" placeholder="ID" id="id" class="account">
+            <input type="password" placeholder="Password" id="password" class="account">
+            <input type="password" placeholder="Password재확인" id="password2" class="account">
+            <button onclick="register()" id="register" class="account">Register</button>
+
+            <p id="alert" class="account"> </p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

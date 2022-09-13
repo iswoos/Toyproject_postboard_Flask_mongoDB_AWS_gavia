@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+<meta property="og:title" content="첫번째 Toyproject" />
+<meta property="og:description" content="한번 체크해주세요!" />
+<meta property="og:image" content="https://movie-phinf.pstatic.net/20220720_283/1658284839003UzxoT_JPEG/movie_image.jpg" />
+
+
+
+
+    <style>
+        .main {
+            width: 250px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid lightgrey;
+            border-radius: 5px;
+        }
+
+        .logo {
+            margin-top: 0px;
+            margin-bottom: 40px;
+        }
+
+        #login {
+            width: 100%;
+            background-color: skyblue;
+            border-color: transparent;
+            color: white;
+        }
+
+        #register {
+            width: 100%;
+            background-color: skyblue;
+            border-color: transparent;
+            color: white;
+        }
+
+        .account {
+            display: block;
+            margin-bottom: 3px;
+            padding: 3px;
+            border: 1px solid lightgray;
+            border-radius: 3px;
+        }
+
+        #alert {
+            border-color: transparent;
+        }
+
+    </style>
+
+    <script>
+        function login() {
+            let input_ID = $('#id').val()
+            let input_PW = $('#password').val()
+            console.log(input_ID, input_PW)
+
+            // ID/PW 입력 안했을 시 경고하는 기능
+            if (input_ID == "") {
+                alert("ID를 입력해주세요")
+                $('#id').focus();
+
+            } else if (input_PW == "") {
+                alert("PW를 입력해주세요")
+                $('#password').focus();
+            } else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: {
+                        ID_give: input_ID,
+                        PW_give: input_PW
+                    },
+                    success: function (response) {
+                        // ID/PW가 DB에 있는 것과 같다면, 쿠키에 토큰값을 넣고
+                        // success 메시지를 출력하고 아래 링크로 이동한다
+                        // response에는 token도 같이 첨부되어있다.
+                        if (response['msg'] == '로그인 성공!') {
+
+                            // 아래 $코드는 제이쿼리를 이용해 jwt토큰 value를 가지는 mytoken이라는 쿠기를 생성하는 코드이다.
+                            $.cookie('mytoken', response['token'])
+                            console.log($.cookie('mytoken'))
+                            alert(response['msg'])
+                            location.href='/main'
+
+                        } else {
+                            alert(response['msg'])
+                        }
+                    }
+                })
+            }
+        }
+</script>
+
+
+</head>
+<body>
+    <div class="main">
+        <h1 class="logo">메인명 미정</h1>
+        <div class="container">
+            <input type="text" placeholder="ID" id="id" class="account">
+            <input type="password" placeholder="Password" id="password" class="account">
+            <div class="eyes">
+                <i class="fa fa-eye fa-lg"></i>
+            </div>
+
+
+            <button onclick="login()" id="login" class="account">login</button>
+<!--            페이지 이동되게 아래 기능을 사용했음!-->
+            <button onclick="window.location.href='/register'" id="register" class="count">Register</button>
+
+            <p id="alert" class="account"> </p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

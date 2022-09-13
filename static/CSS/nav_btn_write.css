@@ -1,0 +1,17 @@
+#nav_btn_write {
+  background-color: white;
+  border-color: white;
+  color: black;
+
+  width: 60px;
+  height: 30px;
+}
+
+#nav_btn_write:hover {
+  background-color: #08a88a;
+  border-color: #08a88a;
+  box-shadow: 1px 1px 1px #08a88a;
+  color: white;
+  width: 60px;
+  height: 30px;
+}

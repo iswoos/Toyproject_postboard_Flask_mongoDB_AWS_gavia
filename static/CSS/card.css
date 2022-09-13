@@ -1,0 +1,21 @@
+.myCard {
+  max-width: 1200px;
+
+  margin: 20px auto 0px auto;
+}
+
+.card-title {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+.card {
+  border-radius: 10px;
+  border-color: #9d9d9d;
+}
+
+.card_btn_heart {
+  background-color: white;
+  border: 0;
+  outline: 0;
+}
